@@ -132,7 +132,10 @@ java Main
 6. Implement save/load game state
 
 ## Author
-[Your Name]
+Tebogo 
+Email: tphiri.firi@gmail.com 
+GitHub: https://github.com/TebogoP/ 
+LinkedIn: https://www.linkedin.com/in/tebogo-phiri-b5a96796/
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
