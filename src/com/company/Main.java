@@ -26,116 +26,57 @@ public class Main {
     }
 
     //--Assuming that the one close to 21 wins 
-    public static String againstDealer(Player player1, Player Dealer) {// assuming that Player P2 is the dealer
-    	
+    public static String againstDealer(Player player1, Player dealer) {
+        int playerPoints = player1.getTotalPoints();
+        int dealerPoints = dealer.getTotalPoints();
+        int playerCardsInHand = player1.getCards().length;
+        int dealerCardsInHand = dealer.getCards().length;
 
-        int Player1Points = player1.getTotalPoints();
-        int dealerPoints = Dealer.getTotalPoints();
-        int PcardsInHand = player1.getCards().length;
-        int DcardsInHand=Dealer.getCards().length;
-        String msg="";
-        String DealerWins =  "The Dealer("+ dealerPoints +") has won against the " + player1.getName()+"("+ Player1Points +")";
-        String PlayerWins =player1.getName()+"("+ Player1Points +")"+ " has won against the dealer("+ dealerPoints +")";
-        String tie =player1.getName() + " has tie at "+ dealerPoints +" against the dealer";
-       
-        //Automatic win scenario
-        if (PcardsInHand == 5 & Player1Points <= 21) {// 5 cards and 21>=
-            return PlayerWins;
-        }
-      //Automatic win scenario 
-        if (PcardsInHand >=DcardsInHand  & Player1Points <= 21) {// Player cards more than or equals to dealer's hand and 21>=
-           return PlayerWins;
-        }
-        
-        //If Player gets has 21 and dealer is above or below 21
-        if (Player1Points== 21 & (dealerPoints < 21 || dealerPoints>21)){
-        	msg= PlayerWins;
-        }
-      //If Dealer gets has 21 and player is above or below 21
-        if (dealerPoints== 21 & (Player1Points < 21 || Player1Points>21)){
-        	msg= DealerWins;
-        }
-        
-        
-      //---- If Player above 21 and Dealer below 21
-        //P1>21 && D<21 -Dealer Wins
-        if(Player1Points > 21 & dealerPoints < 21){
-        	msg= DealerWins;
-        }
-        
-      //---- If Player below 21 and Dealer above 21
-        //P1<21 && D>21 -Player Wins
-        if(Player1Points < 21 & dealerPoints > 21){
-        	msg= PlayerWins;
-        }
-        
-        //---- If both above 21 
-        if(Player1Points > 21 & dealerPoints > 21) {
-        	if(dealerPoints>Player1Points) {
-        		msg= PlayerWins;
-        	}
-        	else if (dealerPoints<Player1Points) {
-        		msg= DealerWins;
-        	}else {
-        		msg= tie;
-        	}
-        		
-        	
-        }
-      //---- If both below 21
-        if(Player1Points < 21 & dealerPoints < 21) {
-        	if(dealerPoints>Player1Points) {
-        		msg= DealerWins;
-        	}else if(dealerPoints<Player1Points) {
-        		msg= PlayerWins;
-        	}
-        	else {
-        		msg= tie;
-        	}
-        }
-        
-      //---- If both above 21 
-        //Dealer > Player
-//        //(P1>21 && D>21) && (P1< D) -Player Wins
-//        if((Player1Points > 21 && dealerPoints > 21)&&(dealerPoints>Player1Points)){
-//        	msg= PlayerWins;
-//        }
-//        
-//        //Dealer < Player
-//        //(P1>21 && D>21) && (P1> D) -Dealer Wins
-//        if((Player1Points > 21 && dealerPoints > 21)&&(dealerPoints<Player1Points)){
-//        	msg= DealerWins;
-//        }
-//      //Dealer = Player
-//        //(P1>21 && D>21) && (P1== D) -Dealer Wins
-//        if((Player1Points > 21 && dealerPoints > 21)&&(dealerPoints==Player1Points)){
-//        	msg= tie;
-//        }
-        
-      //---- If both below 21
-      //Dealer > Player
-//        //(P1<21 && D<21) && (P1< D) -Dealer Wins
-//        if((Player1Points < 21 && dealerPoints < 21)&&(dealerPoints>Player1Points)){
-//        	msg= DealerWins;
-//        }
-//        
-//      //Dealer < Player
-//        //(P1<21 && D<21) && (P1> D) -Player Wins
-//        if((Player1Points < 21 && dealerPoints < 21)&&(dealerPoints<Player1Points)){
-//        	msg= PlayerWins;
-//        }
-//      //Dealer = Player
-//        if((Player1Points < 21 && dealerPoints < 21)&&(dealerPoints==Player1Points)){
-//        	msg= tie;
-//        }
-//        if (Player1Points == 21 && dealerPoints == 21) {// both == 21
-//        	msg= tie;
-//        }
-//        
-        return msg;	
+        String dealerWins = "The Dealer (" + dealerPoints + ") has won against " + player1.getName() + " (" + playerPoints + ")";
+        String playerWins = player1.getName() + " (" + playerPoints + ") has won against the dealer (" + dealerPoints + ")";
+        String tie = player1.getName() + " and the dealer have tied at " + playerPoints;
 
+        // Automatic win for the player if they have 5 cards and <= 21
+        if (playerCardsInHand == 5 && playerPoints <= 21) {
+            return playerWins;
+        }
+
+        // Check for busts (over 21)
+        if (playerPoints > 21 && dealerPoints > 21) {
+            // Both bust: the one with the lower score wins
+            if (playerPoints < dealerPoints) {
+                return playerWins; // Dealer has a worse bust
+            } else if (dealerPoints < playerPoints) {
+                return dealerWins; // Player has a worse bust
+            } else {
+                return tie; // Both busted with the same score
+            }
+        } else if (playerPoints > 21) {
+            // Player busts, dealer wins
+            return dealerWins;
+        } else if (dealerPoints > 21) {
+            // Dealer busts, player wins
+            return playerWins;
+        }
+
+        // If neither busts, check for exact 21
+        if (playerPoints == 21 && dealerPoints == 21) {
+            return tie;
+        } else if (playerPoints == 21) {
+            return playerWins;
+        } else if (dealerPoints == 21) {
+            return dealerWins;
+        }
+
+        // Neither busted or got 21, compare points
+        if (playerPoints > dealerPoints) {
+            return playerWins;
+        } else if (dealerPoints > playerPoints) {
+            return dealerWins;
+        } else {
+            return tie;
+        }
     }
-
 
     //---
 
